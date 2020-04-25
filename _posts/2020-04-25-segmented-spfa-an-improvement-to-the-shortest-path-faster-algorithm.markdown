@@ -4,7 +4,7 @@ title:  "Segmented SPFA: An improvement to the Shortest Path Faster Algorithm."
 date:   2020-04-25
 ---
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 ### Summary
 
