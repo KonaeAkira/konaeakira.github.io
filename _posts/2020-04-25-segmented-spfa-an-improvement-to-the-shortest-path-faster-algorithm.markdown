@@ -14,11 +14,11 @@ In this post I will present the Segmented Shortest Path Faster Algorithm, which 
 
 ### The algorithm
 
-Given a directed weighted graph with no negative cycles, we start by partitioning it into SCCs and run the SPFA on each component in topological order. In each iteration of the algorithm we will calculate the distance for all vertices within that SCC, and relax vertices in other SCCs (but we don't add them to the queue).
+Given a directed weighted graph with no negative cycles, that algorithm starts by partitioning the graph into SCCs and run the SPFA on each component in topological order. In each iteration, the algorithm calculates the distance for all vertices within that SCC, and relaxes vertices in other SCCs (but doesn't add them to the queue just yet).
 
 The SPFA can be slow in case a vertex is relaxed with a non-optimal value and it is used to relax other vertices. Then a second relaxtion has to 'catch up' and undo what the first relaxation propagated. The motivation for segmenting the graph is to limit 'catching up' to within the same SCC.
 
-Below is the pseudocode for this algorithm.
+Below is the pseudocode for the Segmented SPFA. Here `Tarjan(G, s)` is Tarjan's algorithm for finding SCCs.
 
 ```
 procedure SegmentedSPFA(G, s):
@@ -39,15 +39,17 @@ procedure SegmentedSPFA(G, s):
                         Queue.push(v)
 ```
 
-For the sake of proving the correctness, let $$s$$ be its own SCC. To achieve that we simply remove all incoming edges of $$s$$. This does not change the shortest path to any vertex, because if going around and coming back to $$s$$ before going to some vertex gives a shorter path than going directly from $$s$$ to that vertex, then we have just found a negative cycle containing $$s$$.
+The runtime of the Segmented SPFA is the time it takes to find SCCs and order topologically (can be done in 1 pass of Tarjan's algorithm), and running the SPFA for each of the SCCs. In the worst case (when there is only 1 SCC), the complexity can be $$\mathcal{O}(VE)$$, which gives no improvement over the SFPA.
+
+### Proof of correctness
+
+Let $$s$$ be its own SCC. To achieve that we simply remove all incoming edges of $$s$$. This does not change the shortest path to any vertex, because if going around and coming back to $$s$$ before going to some vertex gives a shorter path than going directly from $$s$$ to that vertex, then we have just found a negative cycle containing $$s$$.
 
 The correctness of the algorithm can now be proven via induction. **\[WIP\]**
 
-The runtime of the Segmented SPFA is the time it takes to find SCCs and order topologically (can be done in 1 pass of Tarjan's algorithm), and running the SPFA for each of the SCCs. In the worst case (when there is only 1 SCC), the complexity can be $$\mathcal{O}(VE)$$, which gives no improvement over the SFPA.
+### Benchmarks
 
-### Actual benchmarks
-
-For randomly generated graphs, the SPFA is expected to run in $$\mathcal{O}(E)$$ (unproven), so the Segmented SPFA usually gives no significant runtime improvement and can even be slower at times because it has to find all SCCs in the graph.
+For randomly generated graphs, the SPFA is expected to run in $$\mathcal{O}(E)$$ (unproven), so the Segmented SPFA gives no significant runtime improvement and can even be slower because it has to find all SCCs in the graph.
 
 However, for graphs for which the SPFA takes longer ([zhougelin][hard-graphs] shows us one way to construct such a graph), the runtime is dominated by the SPFA and we can really observe the speedup that the Segmented version gives. I will call such graphs 'hard' graphs.
 
@@ -82,8 +84,6 @@ The Segmented Shortest Path Algorithm works best when the graph can be partition
 For randomly generated graphs, it is still best to use the Shortest Path Faster Algorithm.
 
 For hard graphs with few SCCs, it is still best to use the Shortest Path Faster Algorithm.
-
-Designing and testing the Segmented SPFA has been a fun exercise, but I doubt it will see much use in the real world.
 
 _Further note: Segmenting can also be done for other path-finding algorithms like Dijkstra's algorithm. I haven't looked into that yet, but perhaps I will follow up on that in a future blog post._
 
