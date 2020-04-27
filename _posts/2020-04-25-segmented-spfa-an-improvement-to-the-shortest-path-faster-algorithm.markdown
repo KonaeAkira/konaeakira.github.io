@@ -87,7 +87,7 @@ For hard graphs with few SCCs, it is still best to use the Shortest Path Faster 
 
 _Further note: Segmenting can also be done for other path-finding algorithms like Dijkstra's algorithm. I haven't looked into that yet, but perhaps I will follow up on that in a future blog post._
 
-[benchmark-code]: https://raw.githubusercontent.com/KonaeAkira/konaeakira.github.io/master/_snippets/segmented-spfa-benchmark.cpp
+[benchmark-code]: /assets/code-snippets/segmented-spfa-benchmark.cpp
 [hard-graphs]: http://poj.org/showmessage?message_id=136458
 
 
