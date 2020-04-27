@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Segmented SPFA: An improvement to the Shortest Path Faster Algorithm."
+description: "An algorithm which gives a significant speedup over the Shortest Path Faster Algorithm for graphs with many Strongly Connected Components."
 date:   2020-04-25
 ---
 
