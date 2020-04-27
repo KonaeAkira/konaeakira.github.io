@@ -19,18 +19,21 @@
 # in the templates via {{ site.myvariable }}.
 
 title: KonaeAkira's blog
-email: lotruong@student.ethz.ch
 description: My personal homepage and a place for me to share my findings along with my programming adventures.
+
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://konaeakira.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-github_username:  KonaeAkira
+
+email: lotruong@student.ethz.ch
+github_username: KonaeAkira
+logo: /_assets/avatar.jpeg
 
 # Build settings
 markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
-
+  - jekyll-seo-tag
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
