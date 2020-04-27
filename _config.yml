@@ -28,6 +28,8 @@ email: lotruong@student.ethz.ch
 github_username: KonaeAkira
 logo: /_assets/avatar.jpeg
 
+google_analytics: UA-164701791-1
+
 # Build settings
 markdown: kramdown
 theme: minima
