@@ -44,9 +44,15 @@ The runtime of the Segmented SPFA is the time it takes to find SCCs and order to
 
 ### Proof of correctness
 
-Let $$s$$ be its own SCC. To achieve that we simply remove all incoming edges of $$s$$. This does not change the shortest path to any vertex, because if going around and coming back to $$s$$ before going to some vertex gives a shorter path than going directly from $$s$$ to that vertex, then we have just found a negative cycle containing $$s$$.
+We can prove the correctness of the algorithm via induction.
 
-The correctness of the algorithm can now be proven via induction. **\[WIP\]**
+Let $$C_i$$ ($$i \geq 2$$) be the component that the algorithm is currently working on. Note that $$C_i$$ has to be reachable from the source, otherwise we can ignore this component. We assume that for all $$j \in \{1, ..., i - 1\}$$ the algorithm has already computed the correct shortest path to vertices in $$C_j$$. Then there must be at least $$1$$ vertex in $$C_i$$ for which the correct shortest path has been computed. Let's call this vertex $$s_i$$.
+
+_Proof:_ Let $$x$$ be an arbitrary vertex in $$C_i$$. Let $$p(x)$$ be a a vertex so that it is a direct predecessor of $$x$$ for at least one shortest path from the source to $$x$$. Because of the topological ordering, $$p(x)$$ is either in $$C_i$$ or in some $$C_j$$ with $$j \lt i$$. Also, there cannot exist a cycle of the form $$\{x, p(x), p(p(x)), ..., x\}$$, because this implies that there is a negative cycle. We cannot add $$\|C_i\|$$ directed edges contained in $$C_i$$ without creating a cycle, thus at least one edge must point out of $$C_i$$, i.e. there exists a vertex $$x \in C_i$$ so that $$p(x) \in C_j$$ with $$j \lt i$$.
+
+Because the shortest path to $$s_i$$ is finite, it is added to the queue for $$C_i$$. The Shortest Path Faster Algorithm then takes care of the rest and computes the correct shortest paths for all vertices in $$C_i$$ (It only needs one vertex with a correct shortest path to be in the queue. Other vertices slow down the algorithm by propagating suboptimal paths, but do not affect the correctness of the algorithm). It also relaxes edges going out from $$C_i$$, completing the precondition for $$C_{i+1}$$.
+
+The base case is trivial, because the source is part of $$C_1$$. And the shortest path to the source is $$0$$, otherwise we can show that there exists a negative cycle.
 
 ### Benchmarks
 
@@ -62,7 +68,7 @@ Algorithm | 1 SCC | 5 SCCs | 20 SCCs | 100 SCCs | 500 SCCs
 Segmented | 41 ms | 42 ms | 41 ms | 40 ms | 39 ms
 Vanilla | 17 ms | 19 ms | 18 ms | 13 ms | 11 ms
 
-Unsurprisingly, the Segmented version is slower in all cases, because it computes all SCCs in the graph.
+Unsurprisingly, the Segmented version is slower in all cases, because it computes all SCCs, whereas the vanilla version just zooms through the graph.
 
 Then I tested both algorithms on **hard graphs** (test cases inspired by [zhougelin's idea][hard-graphs], but designing the test cases so that they are still solveable with the SPFA instead of making it approach $$\mathcal{O}(VE)$$). Again, these are connected graphs of 100000 vertices and 400000 edges.
 
