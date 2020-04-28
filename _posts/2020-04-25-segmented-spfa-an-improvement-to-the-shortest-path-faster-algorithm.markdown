@@ -15,7 +15,7 @@ In this post I will present the Segmented Shortest Path Faster Algorithm, which 
 
 ### The algorithm
 
-Given a directed weighted graph with no negative cycles, that algorithm starts by partitioning the graph into SCCs and run the SPFA on each component in topological order. In each iteration, the algorithm calculates the distance for all vertices within that SCC, and relaxes vertices in other SCCs (but doesn't add them to the queue just yet).
+Given a directed weighted graph with no negative cycles, the algorithm starts by partitioning the graph into SCCs. This forms a Directed Acyclid Graph (DAG) of SCCs. Then the algorithm uses the SPFA to find shortest paths in each SCC in topological order. In each iteration, the algorithm also relaxes vertices outside of the current SCC, but doesn't add those vertices to the queue yet.
 
 The SPFA can be slow in case a vertex is relaxed with a non-optimal value and it is used to relax other vertices. Then a second relaxtion has to 'catch up' and undo what the first relaxation propagated. The motivation for segmenting the graph is to limit 'catching up' to within the same SCC.
 
