@@ -83,3 +83,54 @@ function Trace(pre, v):
 An important thing to note here is that the vertex `v` in the `SPFA` function that triggers the negative cycle condition doesn't neccesarily have to be part of a negative cycle. It is just a vertex that is reachable from a negative cycle.
 
 The runtime complexity of the SPFA algorithm is at most $$\mathcal{O}(nm)$$, and the trace function takes $$\mathcal{O}(n)$$.
+
+### Can we do better?
+
+Let's define the _dependency graph_ $$D$$ of $$G$$ as the graph made of `(pre[u], u)` edges after the SPFA has terminated. Notice that in the case that $$G$$ has no negative cycles, $$D$$ is a Directed Acyclic Graph (DAG). Once there is a negative cycle, the dependency graph will also contain a cycle. This cycle in $$D$$ also corresponds to the negative cycle in $$G$$.
+
+_Proof:_ **[WIP]**
+
+If we can efficiently detect when a cycle in $$D$$ forms, we can terminate the SPFA early instead of waiting for some vertex to reach path length $$n$$. It turns out that we can do this with a link/cut tree.
+
+A [link/cut tree][link-cut-tree-wikipedia] is a data structure for representing a set of rooted trees. It supports the following operations:
+
+- `detach(u)`: disconnect `u` (and its subtree) from its parent.
+- `attach(u, v)`: attach the rooted tree `u` to `v` as its subtree.
+- `root(u)`: find the root of vertex `u`.
+
+All the above operations have an amortized runtime of $$\mathcal{O}(log\>n)$$.
+
+Instead of keeping track of the length of the shortest paths, the pseudocode below utilizes a link/cut tree to detect a negative cycle as it forms.
+
+```
+function SPFA(G, s):
+    for v in V(G):
+        pre[v] = null
+    for v in V(G) \ {s}:
+        dis[v] = inf
+    dis[s] = 0
+    Queue.push(s)
+    while !Queue.is_empty():
+        u = Queue.pop()
+        for (u, v) in E(G):
+            if dis[u] + w(u, v) < dis[v]:
+                if pre[v] != null:
+                    detach(v)
+                if root(u) == v:
+                    return "negative cycle detected"
+                attach(v, u)
+                dis[v] = dis[i] + w(u, v)
+                if !Queue.contains(v):
+                    Queue.push(v)
+    return "no negative cycle detected"
+```
+
+This algorithm will work well on graphs with a short negative cycle, as it can detect immediately once we have found such a cycle. However, due to the extra cost of maintaining the link/cut tree, this algorithm is slower than the one mentioned in the beginning of this article for graphs with long negative cycles or no negative cycles.
+
+The runtime complexity of this algorithm is up to $$\mathcal{O}(nm\>log\>n)$$.
+
+### Benchmarks
+
+**[WIP]**
+
+[link-cut-tree-wikipedia]: https://en.wikipedia.org/wiki/Link/cut_tree
