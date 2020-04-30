@@ -8,7 +8,9 @@ permalink: /about-me/
 
 My name is **Truong Hoang Long**.
 
-I am a computer science student at ETH Zürich, a fanatic for competitive programming and theoretical computer science. I enjoy learning about new algorithms and (trying to write) writing highly optimized code. 
+I am a computer science student at ETH Zürich, a fanatic for competitive programming and theoretical computer science. I enjoy learning about new algorithms and (trying to write) writing highly optimized code.
+
+I am an enthusiastic worker and a fast learner, and I'm currently open to internship/working opportunities.
 
 You can find me on Codeforces as [KonaeAkira][codeforces-profile].
 
@@ -25,7 +27,7 @@ Computer Science Honors @ VNU-HCM High School For The Gifted
 ### Achievements
 
 _2019_  
-Second prize, ACM-ICPC Vietnamese National
+Second prize, ACM-ICPC Vietnamese Nationals
 
 _2019_  
 Silver medal, Vietnamese Olympiad in Informatics
