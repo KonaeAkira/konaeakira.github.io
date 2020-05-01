@@ -2,7 +2,7 @@
 layout: post
 title:  "Using the Shortest Path Faster Algorithm to find a negative cycle."
 description: "The Shortest Path Faster Algorithm is an improvement over the Bellman-Ford Algorithm, and it can be used to find negative cycles in a directed weighted graph."
-date:   2020-04-30
+date:   2020-04-30 19:58 +0700
 ---
 
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -19,13 +19,14 @@ The Bellman-Ford Algorithm exploits the fact that in a graph with no negative cy
 
 Below is the pseudocode for the SPFA with negative cycle detection. Here `Queue` is a First-In-First-Out queue and `w(u, v)` is the weight of the edge `(u, v)`, `dis[u]` is the weight of the current shortest path from the source to `u`, and `len[u]` is the length (in amount of edges) of the current shortest path from the source to `u`.
 
+I have modified the SPFA so that every vertex has a starting "shortest path" of $$0$$. This has the same effect as creating an imaginary source vertex $$s$$ and creating an edge with weight $$0$$ from $$s$$ to all other vertices. This ensures that the algorithm can detect a negative cycle regardless of the graph's connectivity.
+
 ```
-function SPFA(G, s):
-    len[s] = 0
-    for v in V(G) \ {s}:
-        dis[v] = inf
-    dis[s] = 0
-    Queue.push(s)
+function SPFA(G):
+    for v in V(G):
+        len[v] = 0
+        dis[v] = 0
+        Queue.push(s)
     while !Queue.is_empty():
         u = Queue.pop()
         for (u, v) in E(G):
@@ -46,12 +47,11 @@ Reconstructing the negative cycle can be done with a few modifications to the al
 We will create a new array `pre`, where `pre[u]` is the direct predecessor of `u` in the current shortest path. Below is the new pseudocode.
 
 ```
-function SPFA(G, s):
-    len[s] = 0
-    for v in V(G) \ {s}:
-        dis[v] = inf
-    dis[s] = 0
-    Queue.push(s)
+function SPFA(G):
+    for v in V(G):
+        len[v] = 0
+        dis[v] = 0
+        Queue.push(s)
     while !Queue.is_empty():
         u = Queue.pop()
         for (u, v) in E(G):
@@ -103,13 +103,11 @@ All the above operations have an amortized runtime of $$\mathcal{O}(log\>n)$$.
 Instead of keeping track of the length of the shortest paths, the pseudocode below utilizes a link/cut tree to detect a negative cycle as it forms.
 
 ```
-function SPFA(G, s):
+function SPFA(G):
     for v in V(G):
-        pre[v] = null
-    for v in V(G) \ {s}:
-        dis[v] = inf
-    dis[s] = 0
-    Queue.push(s)
+        len[v] = 0
+        dis[v] = 0
+        Queue.push(s)
     while !Queue.is_empty():
         u = Queue.pop()
         for (u, v) in E(G):
