@@ -51,6 +51,7 @@ function SPFA(G):
     for v in V(G):
         len[v] = 0
         dis[v] = 0
+        pre[v] = null
         Queue.push(s)
     while !Queue.is_empty():
         u = Queue.pop()
@@ -107,6 +108,7 @@ function SPFA(G):
     for v in V(G):
         len[v] = 0
         dis[v] = 0
+        pre[v] = null
         Queue.push(s)
     while !Queue.is_empty():
         u = Queue.pop()
