@@ -2,7 +2,7 @@
 layout: post
 title:  "Using the Shortest Path Faster Algorithm to find a negative cycle."
 description: "The Shortest Path Faster Algorithm is an improvement over the Bellman-Ford Algorithm, and it can be used to find negative cycles in a directed weighted graph."
-date:   2020-05-01 19:58 +0700
+date:   2020-05-01 20:14 +0700
 ---
 
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -26,7 +26,7 @@ function SPFA(G):
     for v in V(G):
         len[v] = 0
         dis[v] = 0
-        Queue.push(s)
+        Queue.push(v)
     while !Queue.is_empty():
         u = Queue.pop()
         for (u, v) in E(G):
@@ -52,7 +52,7 @@ function SPFA(G):
         len[v] = 0
         dis[v] = 0
         pre[v] = null
-        Queue.push(s)
+        Queue.push(v)
     while !Queue.is_empty():
         u = Queue.pop()
         for (u, v) in E(G):
@@ -109,7 +109,7 @@ function SPFA(G):
         len[v] = 0
         dis[v] = 0
         pre[v] = null
-        Queue.push(s)
+        Queue.push(v)
     while !Queue.is_empty():
         u = Queue.pop()
         for (u, v) in E(G):
