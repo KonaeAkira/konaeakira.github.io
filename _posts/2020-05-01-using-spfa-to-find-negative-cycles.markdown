@@ -3,6 +3,7 @@ layout: post
 title:  "Using the Shortest Path Faster Algorithm to find a negative cycle."
 description: "The Shortest Path Faster Algorithm is an improvement over the Bellman-Ford Algorithm, and it can be used to find negative cycles in a directed weighted graph."
 date:   2020-05-01 20:14 +0700
+permalink: /using-the-shortest-path-faster-algorithm-to-find-negative-cycles
 ---
 
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
