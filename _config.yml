@@ -23,6 +23,7 @@ description: My personal homepage and a place for me to share my findings along 
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://konaeakira.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+permalink: /posts/:title:output_ext
 
 email: lotruong@student.ethz.ch
 github_username: KonaeAkira
