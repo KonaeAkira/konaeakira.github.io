@@ -7,6 +7,8 @@ date:   2020-05-01 21:15 +0700
 
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
 ### Introduction
 
 The Shortest Path Faster Algorithm (SPFA) is an improvement over the Bellman-Ford Algorithm. Both are used to calculate the shortest paths from a single source vertex in a weighted directed graph. The SPFA is almost always preferred over the Bellman-Ford Algorithm because of its speed. It has an (unproven) average runtime complexity of $$\mathcal{O}(m)$$.

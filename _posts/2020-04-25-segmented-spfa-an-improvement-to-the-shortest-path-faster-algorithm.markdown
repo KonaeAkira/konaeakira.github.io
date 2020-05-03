@@ -7,6 +7,8 @@ date:   2020-04-25 19:00 +0700
 
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
 ### Summary
 
 The Shortest Path Faster Algorithm (SPFA) is an improvement of the Bellman-Ford algorithm. It computes the shortest paths from a single source vertex to all other vertices in a weighted directed graph. The SPFA has a worst-case runtime equal to that of the Bellman-Ford algorithm, but in practice it has been observed to be much faster.
@@ -96,6 +98,3 @@ _Further note: Segmenting can also be done for other path-finding algorithms lik
 
 [benchmark-code]: /assets/code-snippets/segmented-spfa-benchmark.cpp
 [hard-graphs]: http://poj.org/showmessage?message_id=136458
-
-
-
