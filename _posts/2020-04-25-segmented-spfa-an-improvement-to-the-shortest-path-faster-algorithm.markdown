@@ -2,7 +2,7 @@
 layout: post
 title:  "Segmented SPFA: An improvement to the Shortest Path Faster Algorithm."
 description: "An algorithm which gives a significant speedup over the Shortest Path Faster Algorithm for graphs with many Strongly Connected Components."
-date:   2020-04-25 19:00 +0700
+date: 2020-05-04 11:20 +0700
 ---
 
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
