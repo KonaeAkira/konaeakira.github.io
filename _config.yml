@@ -19,7 +19,7 @@
 # in the templates via {{ site.myvariable }}.
 
 title: KonaeAkira's blog
-description: My personal homepage and a place for me to share my findings along with my programming adventures.
+# description: My personal homepage and a place for me to share my findings along with my programming adventures.
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://konaeakira.github.io" # the base hostname & protocol for your site, e.g. http://example.com
