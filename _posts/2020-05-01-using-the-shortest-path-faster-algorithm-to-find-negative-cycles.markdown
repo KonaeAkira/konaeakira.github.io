@@ -140,6 +140,8 @@ Then I tested both variants on some smaller graphs so that the path-length varia
 - Path length: 1737 ms.
 - Early termination: 0 ms.
 
+The [C++ Code](/assets/code-snippets/cycle-detection-with-spfa.cpp) I used to benchmark the algorithm.
+
 ### Conclusion
 
 It is clear (both from the theoretical runtime and from my experiments) that the early-terminated SPFA is a great algorithm to detect/find a negative cycle in a directed acyclic graph.
