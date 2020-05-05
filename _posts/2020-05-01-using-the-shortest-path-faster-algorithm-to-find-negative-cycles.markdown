@@ -13,13 +13,17 @@ date: 2020-05-04 14:39 +0700
 
 The Shortest Path Faster Algorithm (SPFA) is an improvement over the Bellman-Ford Algorithm. Both are used to calculate the shortest paths from a single source vertex in a weighted directed graph. The SPFA is almost always preferred over the Bellman-Ford Algorithm because of its speed. It has an (unproven) average runtime complexity of $$\mathcal{O}(m)$$.
 
-The Bellman-Ford Algorithm is also used to detect/find negative cycles, and the SPFA can do that, too! In this article I will show how to use the SPFA to find a negative cycle, and propose a speedup using Link/Cut trees.
+The Bellman-Ford Algorithm is also used to detect/find negative cycles, and the SPFA can do that, too! In this article I will show how to use the SPFA to find a negative cycle, and propose a method to terminate the algorithm early in the presence of a negative cycle.
 
 ### Detecting a negative cycle
 
 The Bellman-Ford Algorithm exploits the fact that in a graph with no negative cycles, the length of any shortest path is at most $$n-1$$. Therefore, we simply need to keep track of the length of the current shortest path for each vertex.
 
-Below is the pseudocode for the SPFA with negative cycle detection. Here `Queue` is a First-In-First-Out queue and `w(u, v)` is the weight of the edge `(u, v)`, `dis[u]` is the weight of the current shortest path from the source to `u`, and `len[u]` is the length (in amount of edges) of the current shortest path from the source to `u`.
+Below is the pseudocode for the SPFA with negative cycle detection.
+- `Queue` is a First-In-First-Out queue.
+- `w(u, v)` is the weight of the edge `(u, v)`.
+- `dis[u]` is the weight of the current shortest path from the source to `u`.
+- `len[u]` is the length (in amount of edges) of the current shortest path from the source to `u`.
 
 **Note:** I have modified the SPFA so that every vertex has a starting "shortest path" of $$0$$. This has the same effect as creating an imaginary source vertex $$s$$ and creating an edge with weight $$0$$ from $$s$$ to all other vertices. This ensures that the algorithm can detect a negative cycle regardless of the graph's connectivity. Now the only purpose of the algorithm is to detect a negative cycle. If you still want to calculate the shortest paths from a source vertex in case there are no negative cycles, then _do not_ make this modification.
 
@@ -48,33 +52,20 @@ It is worth noting that although the SPFA is very fast when there is no negative
 
 Reconstructing the negative cycle can be done with a few modifications to the algorithm.
 
-We will create a new array `pre`, where `pre[u]` is the direct predecessor of `u` in the current shortest path. Below is the new pseudocode.
+We will create a new array `pre`, where `pre[u]` is the direct predecessor of `u` in the current shortest path. We will have to update `pre[v]` whenever we have the condition `dis[u] + w(u, v) < dis[v]`.
 
 ```
-function SPFA(G):
-    for v in V(G):
-        len[v] = 0
-        dis[v] = 0
-        pre[v] = null
-        Queue.push(v)
-    while !Queue.is_empty():
-        u = Queue.pop()
-        for (u, v) in E(G):
-            if dis[u] + w(u, v) < dis[v]:
-            	pre[v] = u
-                len[v] = len[u] + 1
-                if len[v] == n:
-                    return "negative cycle detected"
-                dis[v] = dis[u] + w(u, v)
-                if !Queue.contains(v):
-                    Queue.push(v)
-    return "no negative cycle detected"
+// some code before
+if dis[u] + w(u, v) < dis[v]:
+    pre[v] = u
+    len[v] = len[u] + 1
+// some code after
 ```
 
 Then we create a trace function to find the negative cycle. Here `Stack` is a First-In-Last-Out stack.
 
 ```
-function Trace(pre, v):
+function Trace(pre[], v):
     while !Stack.contains(v):
         Stack.push(v)
         v = pre[v]
@@ -89,78 +80,68 @@ function Trace(pre, v):
 
 The runtime complexity of the SPFA algorithm is at most $$\mathcal{O}(nm)$$, and the trace function takes $$\mathcal{O}(n)$$.
 
-### Can we do better?
+### Early termination
+
+As mentioned before, the SPFA will be really slow in the presence of a negative cycle, as it has to keep computing until a path reaches length $$n$$. In this section I will propose a way to terminate the algorithm early while keeping the worst-case runtime the same.
 
 Let's define the _dependency graph_ $$D$$ of $$G$$ as the graph made of `(pre[u], u)` edges after the SPFA has terminated. Notice that in the case that $$G$$ has no negative cycles, $$D$$ is a Directed Acyclic Graph (DAG). Once there is a negative cycle, the dependency graph will also contain a cycle. This cycle in $$D$$ also corresponds to the negative cycle in $$G$$.
 
 _Proof:_ **[WIP]**
 
-If we can efficiently detect when a cycle in $$D$$ forms, we can terminate the SPFA early instead of waiting for some vertex to reach path length $$n$$. It turns out that we can do this with a link/cut tree.
+If we can detect when a cycle in $$D$$ forms, we can terminate the SPFA early instead of waiting for some vertex to reach path length $$n$$. A simple DFS on the induced graph $$D$$ will do the trick. But since the DFS takes $$\mathcal{O}(n)$$ (the induced graph $$D$$ has $$n$$ vertices and at most $$n$$ edges), we will only do this step every $$n^{th}$$ iteration of the inner loop.
 
-A [link/cut tree][link-cut-tree-wikipedia] is a data structure for representing a set of rooted trees. It supports the following operations:
-
-- `detach(u)`: disconnect `u` (and its subtree) from its parent.
-- `attach(u, v)`: attach the rooted tree `u` to `v` as its subtree.
-- `root(u)`: find the root of vertex `u`.
-
-All the above operations have an amortized runtime of $$\mathcal{O}(log\>n)$$.
-
-Instead of keeping track of the length of the shortest paths, the pseudocode below utilizes a link/cut tree to detect a negative cycle as it forms.
+Below is the pseudocode for the early-terminated SPFA.
+- `iter` is a counter for us to see how many iterations of the inner loop have passed.
+- `detect_cycle(G, pre[])` is a function that returns `true` iff there is a cycle in the induced graph $$D$$. There are many ways you can implement this to run in $$\mathcal{O}(n)$$ and in this post I will not be discussing a specific implementation.
 
 ```
 function SPFA(G):
     for v in V(G):
         len[v] = 0
         dis[v] = 0
-        pre[v] = null
         Queue.push(v)
+    iter = 0
     while !Queue.is_empty():
         u = Queue.pop()
         for (u, v) in E(G):
             if dis[u] + w(u, v) < dis[v]:
-                if pre[v] != null:
-                    detach(v)
-                if root(u) == v:
-                    return "negative cycle detected"
-                attach(v, u)
+                pre[v] = u
+                dis[v] = dis[u] + w(u, v)
+                iter = iter + 1
+                if iter == n:
+                    iter = 0
+                    if detect_cycle(G, pre):
+                        return "negative cycle detected"
                 dis[v] = dis[u] + w(u, v)
                 if !Queue.contains(v):
                     Queue.push(v)
+    if detect_cycle(G, pre):
+        return "negative cycle detected"
     return "no negative cycle detected"
 ```
 
-This algorithm will work well on graphs with a negative cycle, as it can immediately detect once we have found a cycle and terminate. However, due to the extra cost of maintaining the link/cut tree, this algorithm is slower than the one mentioned in the beginning of this article for graphs with no negative cycles.
+Worst-case time complexity: $$\mathcal{O}(nm)$$.
 
-Reconstructing the negative cycle for this algorithm is very simple. It can be found by following `pre[]` array from `u` to `v`, adding edges `(pre[i], i)`, and completed by the edge `(u, v)`.
-
-The runtime complexity of this algorithm is up to $$\mathcal{O}(nm\>log\>n)$$.
+Because the function `detect_cycle()` only runs once every $$n$$ iterations, the worst-case runtime complexity stays the same. However, because this version terminates early, we can expect some pretty huge performance speedups as demonstrated in the next section.
 
 ### Benchmarks
 
-Let's call the algorithms the "Vanilla" version and the "Link/Cut" version.
+First I tested both variants (Path Length and Early Termination) on graphs with no negative cycles to demonstrate the awesomeness of the Shortest Path Faster Algorithm. For this, I used randomly-generated graphs with 1e5 vertices and 4e5 edges and a sample size of 100.
+- Path length: 4 ms.
+- Early termination: 4 ms.
 
-I tested both algorithms on graphs with no negative cycles, and unsurprisngly, the vanilla version beats the link/cut version every time. The times for these tests are pretty standard for the SPFA:
+Then, I tested both on graphs _with_ negative cycles. Again, I used randomly generated graphs with 1e5 vertices and 4e5 edges and a sample size of 100.
+- Path length: N/A.
+- Early termination: 4 ms.
 
-No negative cycles | Vanilla | Link/Cut
-Dense graphs, $$n=3000$$ | 9 ms | 15 ms
-Sparse graphs, $$n=1000000$$ | 91 ms | 105 ms
+The path-length version really took a hit here (it wouldn't finish within 3 minutes so I stopped benchmarking that variant for this test case), whereas the early-terminated version doesn't seem to be affected at all.
 
-Once I introduced negative cycles, the winner was clear. Here $$l$$ denotes the shortest length (in edges) of a negative cycle in the graph.
-
-Short negative cycles | Vanilla | Link/Cut
-Dense graphs, $$n=1000$$, $$l=30$$ | 254 ms | 1 ms
-Sparse graphs, $$n=30000$$, $$l=500$$ | 393 ms | 3 ms
-
-Long negative cycles | Vanilla | Link/Cut
-Dense graphs, $$n=1000$$, $$l=300$$ | 257 ms | 1 ms
-Sparse graphs, $$n=30000$$, $$l=5000$$ | 408 ms | 4 ms
-
-We observe that the Link/Cut version is doing faster when there are negative cycles. This is because it immediately quits after finding a cycle, whereas in the case where there are no cycles, it continues to calculate the _pseudo_ (refer to the note at the beginning of the article) shortest paths to all vertices.
-
-Here is the [C++ code](/assets/code-snippets/spfa-link-cut-for-negative-cycles.cpp) I used for the benchmark.
+Then I tested both variants on some smaller graphs so that the path-length variant can still produce a result within a reasonable time frame. This time, graphs have 1e4 vertices and 3e4 edges.
+- Path length: 1737 ms.
+- Early termination: 0 ms.
 
 ### Conclusion
 
-Unless my testing method is flawed (which it might be, I'm only human), the Link/Cut version is a clear winner.
+It is clear (both from the theoretical runtime and from my experiments) that the early-terminated SPFA is a great algorithm to detect/find a negative cycle in a directed acyclic graph.
 
-[link-cut-tree-wikipedia]: https://en.wikipedia.org/wiki/Link/cut_tree
+However, it still uses the Shortest Path Faster Algorithm as its backbone, and one can easily generate graphs for which the SPFA takes $$\mathcal{O}(nm)$$ time.
