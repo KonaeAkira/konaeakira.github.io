@@ -8,11 +8,11 @@ permalink: /about-me/
 
 My name is **Truong Hoang Long**.
 
-I am a computer science student at ETH Zürich, a fanatic for competitive programming and theoretical computer science. I enjoy learning about new algorithms and (trying to write) writing highly optimized code.
+I am a computer science student at ETH Zürich, a fanatic for competitive programming and theoretical computer science. 
 
-I am an enthusiastic worker and a fast learner, and I'm currently open to internship/working opportunities.
-
-You can find me on Codeforces as [KonaeAkira][codeforces-profile].
+You can find me on
+- Codeforces: [KonaeAkira][codeforces-profile].
+- Github: [KonaeAkira][github-profile].
 
 Send me an e-mail: [lotruong@student.ethz.ch](lotruong@student.ethz.ch).
 
@@ -35,6 +35,17 @@ Silver medal, Vietnamese Olympiad in Informatics
 _2018_  
 Silver medal, Vietnamese Olympiad in Informatics
 
-[codeforces-profile]: https://codeforces.com/profile/KonaeAkira
+_2017_  
+Silver medal, Invitiational Olympiad in Informatics for gifted students in Vietnam
 
+_2017_  
+Gold medal, 30th of April Olympiad in Informatics (Southern Vietnam)
 
+### Languages
+
+- Vietnamese (native)
+- English (fluent, 108/120 TOEFL)
+- German (fluent 80/100 Göthe C1)
+
+[codeforces-profile]: https://codeforces.com/profile/KonaeAkira/
+[github-profile]: https://github.com/KonaeAkira/
