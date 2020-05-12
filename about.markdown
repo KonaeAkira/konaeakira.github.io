@@ -27,10 +27,10 @@ Computer Science Honors @ VNU-HCM High School For The Gifted
 ### Achievements
 
 _2019_  
-Second prize, ACM-ICPC Vietnamese Nationals
-
-_2019_  
 Silver medal, Vietnamese Olympiad in Informatics
+
+_2018_  
+Second prize, ACM-ICPC Vietnamese Nationals
 
 _2018_  
 Silver medal, Vietnamese Olympiad in Informatics
