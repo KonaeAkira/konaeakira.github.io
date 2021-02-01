@@ -16,6 +16,7 @@ bool detect_cycle()
 {
     std::vector<int> vec;
     std::fill(on_stack, on_stack + n, false);
+    std::fill(visited, visited + n, false);
     for (int i = 0; i < n; ++i)
         if (!visited[i])
         {
